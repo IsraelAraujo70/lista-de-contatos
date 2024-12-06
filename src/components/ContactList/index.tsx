@@ -17,20 +17,35 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
 
 const AddButton = styled.button`
-  background-color: #4d79ff;
-  color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-  transition: background-color 0.2s;
+  position: relative;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 1.5px solid ${({ theme }) => theme.colors.text};
+  box-shadow: 2.5px 3px 0 ${({ theme }) => theme.colors.text};
+  font-weight: 600;
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
 
   &:hover {
-    opacity: 0.9;
+    box-shadow: 5px 6px 0 ${({ theme }) => theme.colors.text};
+    transform: translateY(-2px);
   }
+`
+
+const List = styled.div`
+  height: 65vh;
+  overflow-y: scroll;
 `
 
 const Modal = styled.div`
@@ -48,7 +63,8 @@ const Modal = styled.div`
 `
 
 const ModalContent = styled.div`
-  background: white;
+  background: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
   padding: 2rem;
   border-radius: 8px;
   width: 100%;
@@ -94,21 +110,26 @@ export default function ContactList() {
         <AddButton onClick={handleAddContact}>Adicionar Contato</AddButton>
       </Header>
 
-      {filteredContacts.map(contact => (
-        <ContactCard
-          key={contact.id}
-          contact={contact}
-          onEdit={handleEditContact}
-        />
-      ))}
+      <List>
+        {filteredContacts.map(contact => (
+          <ContactCard
+            key={contact.id}
+            contact={contact}
+            onEdit={handleEditContact}
+          />
+        ))}
 
-      {isModalOpen && (
-        <Modal onClick={handleCloseModal}>
-          <ModalContent onClick={e => e.stopPropagation()}>
-            <ContactForm contact={selectedContact} onClose={handleCloseModal} />
-          </ModalContent>
-        </Modal>
-      )}
+        {isModalOpen && (
+          <Modal onClick={handleCloseModal}>
+            <ModalContent onClick={e => e.stopPropagation()}>
+              <ContactForm
+                contact={selectedContact}
+                onClose={handleCloseModal}
+              />
+            </ModalContent>
+          </Modal>
+        )}
+      </List>
     </Container>
   )
 }

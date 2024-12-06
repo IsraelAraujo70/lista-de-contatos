@@ -5,24 +5,32 @@ import { setSearchTerm } from '@/store/features/contactsSlice'
 import styled from 'styled-components'
 
 const SearchContainer = styled.div`
-  margin-bottom: 2rem;
+  margin: 16px 0;
+  max-width: 400px;
+  width: 100%;
 `
 
 const SearchInput = styled.input`
+  border-radius: 0.5rem;
+  border: 1.5px solid ${({ theme }) => theme.colors.text};
+  box-shadow: 2.5px 3px 0 ${({ theme }) => theme.colors.text};
   width: 100%;
   padding: 0.8rem 1rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
   font-size: 1rem;
-  transition: border-color 0.2s;
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
 
   &:focus {
-    outline: none;
-    border-color: #4d79ff;
+    box-shadow: 5px 6px 0 ${({ theme }) => theme.colors.text};
+    transform: translateY(-2px);
   }
 
   &::placeholder {
-    color: #999;
+    color: ${({ theme }) => theme.colors.text};
+    opacity: 0.6;
   }
 `
 

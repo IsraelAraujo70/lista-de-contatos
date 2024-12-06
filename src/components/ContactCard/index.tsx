@@ -7,14 +7,19 @@ import styled from 'styled-components'
 import { toast } from 'react-toastify'
 
 const Card = styled.div`
-  background: #fff;
-  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.background};
   padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  margin: 1rem auto;
+  border-radius: 0.5rem;
+  border: 1.5px solid ${({ theme }) => theme.colors.text};
+  box-shadow: 2.5px 3px 0 ${({ theme }) => theme.colors.text};
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
+  width: 95%;
 
   &:hover {
+    box-shadow: 5px 6px 0 ${({ theme }) => theme.colors.text};
     transform: translateY(-2px);
   }
 `
@@ -28,34 +33,38 @@ const CardHeader = styled.div`
 
 const Name = styled.h3`
   font-size: 1.2rem;
-  color: #333;
+  color: ${({ theme }) => theme.colors.text};
 `
 
 const ButtonGroup = styled.div`
+  margin-top: 1rem;
   display: flex;
   gap: 0.5rem;
 `
 
 const Button = styled.button<{ $variant?: 'edit' | 'delete' }>`
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  font-weight: 500;
-  transition: background-color 0.2s;
-  background-color: ${({ $variant }) =>
-    $variant === 'delete'
-      ? '#ff4d4d'
-      : $variant === 'edit'
-        ? '#4d79ff'
-        : '#e0e0e0'};
-  color: ${({ $variant }) => ($variant ? '#fff' : '#333')};
-
+  position: relative;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 1.5px solid ${({ theme }) => theme.colors.text};
+  box-shadow: 2.5px 3px 0 ${({ theme }) => theme.colors.text};
+  font-weight: 600;
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ $variant, theme }) =>
+    $variant === 'delete' ? 'white' : theme.colors.text};
+  background-color: ${({ $variant, theme }) =>
+    $variant === 'delete' ? 'red' : theme.colors.background};
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
   &:hover {
-    opacity: 0.9;
+    box-shadow: 5px 6px 0 ${({ theme }) => theme.colors.text};
+    transform: translateY(-2px);
   }
 `
 
 const Info = styled.p`
-  color: #666;
+  color: ${({ theme }) => theme.colors.text};
   margin: 0.25rem 0;
   font-size: 0.9rem;
 `
@@ -79,14 +88,6 @@ export default function ContactCard({ contact, onEdit }: ContactCardProps) {
     <Card>
       <CardHeader>
         <Name>{contact.name}</Name>
-        <ButtonGroup>
-          <Button $variant="edit" onClick={() => onEdit(contact)}>
-            Editar
-          </Button>
-          <Button $variant="delete" onClick={handleDelete}>
-            Excluir
-          </Button>
-        </ButtonGroup>
       </CardHeader>
       <Info>
         <strong>Email:</strong> {contact.email}
@@ -97,6 +98,14 @@ export default function ContactCard({ contact, onEdit }: ContactCardProps) {
       <Info>
         <strong>Endereço:</strong> {contact.address}
       </Info>
+      <ButtonGroup>
+        <Button $variant="edit" onClick={() => onEdit(contact)}>
+          Editar
+        </Button>
+        <Button $variant="delete" onClick={handleDelete}>
+          Excluir
+        </Button>
+      </ButtonGroup>
     </Card>
   )
 }

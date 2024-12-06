@@ -7,12 +7,7 @@ import { Contact } from '@/types/contact'
 import styled from 'styled-components'
 import { toast } from 'react-toastify'
 
-const Form = styled.form`
-  background: #fff;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`
+const Form = styled.form``
 
 const FormGroup = styled.div`
   margin-bottom: 1rem;
@@ -21,21 +16,26 @@ const FormGroup = styled.div`
 const Label = styled.label`
   display: block;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: ${({ theme }) => theme.colors.text};
   font-weight: 500;
 `
 
 const Input = styled.input`
+  border-radius: 0.5rem;
+  border: 1.5px solid ${({ theme }) => theme.colors.text};
+  box-shadow: 2.5px 3px 0 ${({ theme }) => theme.colors.text};
   width: 100%;
   padding: 0.8rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 4px;
   font-size: 1rem;
-  transition: border-color 0.2s;
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
 
   &:focus {
-    outline: none;
-    border-color: #4d79ff;
+    box-shadow: 5px 6px 0 ${({ theme }) => theme.colors.text};
+    transform: translateY(-2px);
   }
 `
 
@@ -46,16 +46,23 @@ const ButtonGroup = styled.div`
 `
 
 const Button = styled.button<{ $variant?: 'primary' | 'secondary' }>`
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-  transition: background-color 0.2s;
-  background-color: ${({ $variant }) =>
-    $variant === 'primary' ? '#4d79ff' : '#e0e0e0'};
-  color: ${({ $variant }) => ($variant === 'primary' ? '#fff' : '#333')};
-
+  position: relative;
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 1.5px solid ${({ theme }) => theme.colors.text};
+  box-shadow: 2.5px 3px 0 ${({ theme }) => theme.colors.text};
+  font-weight: 600;
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ $variant, theme }) =>
+    $variant === 'secondary' ? 'white' : theme.colors.text};
+  background-color: ${({ $variant, theme }) =>
+    $variant === 'secondary' ? 'red' : theme.colors.background};
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.2s ease;
   &:hover {
-    opacity: 0.9;
+    box-shadow: 5px 6px 0 ${({ theme }) => theme.colors.text};
+    transform: translateY(-2px);
   }
 `
 
@@ -166,10 +173,14 @@ export default function ContactForm({ contact, onClose }: ContactFormProps) {
       </FormGroup>
 
       <ButtonGroup>
-        <Button type="submit" $variant="primary">
+        <Button
+          type="submit"
+          $variant="primary"
+          disabled={!formData.name || !formData.email || !formData.phone}
+        >
           {contact ? 'Atualizar' : 'Adicionar'}
         </Button>
-        <Button type="button" onClick={onClose}>
+        <Button type="button" onClick={onClose} $variant="secondary">
           Cancelar
         </Button>
       </ButtonGroup>

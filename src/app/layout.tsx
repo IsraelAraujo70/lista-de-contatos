@@ -1,8 +1,9 @@
 import { Metadata } from 'next'
-import StoreProvider from '@/providers/StoreProvider'
-import StyleProvider from '@/providers/StyleProvider'
+import StoreProvider from '../providers/StoreProvider'
+import StyleProvider from '../providers/StyleProvider'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Lista de Contatos',
@@ -16,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body>
+      <body suppressHydrationWarning={true}>
         <StoreProvider>
           <StyleProvider>
             {children}
